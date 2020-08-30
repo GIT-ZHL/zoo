@@ -18,6 +18,8 @@ RUN ["tar","-zxvf","apache-maven-3.6.3-bin.tar.gz"]
 RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
 RUN yum -y install vim
 ADD https://github.com/GIT-ZHL/zoo/archive/master.zip $WORK_PATH
+RUN yum -y install unzip
+RUN ["unzip","-o","-d","/usr/local","zoo-master.zip"]
 RUN ["mvn ","clean","install","-f","zoo-master/antarctic-penguin/pom.xml"]
 
 COPY ["zoo-master/antarctic-penguin/antarctic-penguin-server/target/antarctic-penguin-server-1.0-SNAPSHOT.jar","/usr/local/antarctic-penguin-server/antarctic-penguin-server.jar"]
