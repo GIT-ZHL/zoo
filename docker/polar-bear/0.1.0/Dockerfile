@@ -25,10 +25,10 @@ RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
 RUN yum -y install vim
 ADD https://github.com/GIT-ZHL/zoo/archive/master.zip $WORK_PATH
 RUN yum -y install unzip
-RUN ["unzip","-o","-d","/usr/local","/usr/local/zoo-master"]
-RUN ["mvn ","clean","install","-f","zoo-master/polar-bear/pom.xml"]
+RUN ["unzip","-o","-d","/usr/local","/usr/local/master"]
+RUN ["mvn ","clean","install","-f","/usr/local/master/polar-bear/pom.xml"]
 
-COPY ["zoo-master/polar-bear/polar-bear-server/target/polar-bear-server-1.0-SNAPSHOT","/usr/local/apache-tomcat-9.0.37/webapps/polar-bear-server"]
+COPY ["/usr/local/master/polar-bear/polar-bear-server/target/polar-bear-server-1.0-SNAPSHOT","/usr/local/apache-tomcat-9.0.37/webapps/polar-bear-server"]
 
 EXPOSE 8080
 
@@ -36,5 +36,6 @@ CMD $CATALINE_HOME/bin/startup.sh && tail -f $CATALINE_HOME/logs/catalina.out
 
 # docker build -f docker/polar-bear/0.1.0/Dockerfile -t polar-bear .
 # docker run -d -p 8080:8080 --name polar-bear polar-bear
+# docker run -it -p 8080:8080 --name polar-bear polar-bear
 # docker exec -it polar-bear /bin/bash
 # docker attach polar-bear /bin/bash

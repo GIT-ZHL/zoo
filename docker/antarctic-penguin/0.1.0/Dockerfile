@@ -19,16 +19,17 @@ RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
 RUN yum -y install vim
 ADD https://github.com/GIT-ZHL/zoo/archive/master.zip $WORK_PATH
 RUN yum -y install unzip
-RUN ["unzip","-o","-d","/usr/local","/usr/local/zoo-master"]
-RUN ["mvn ","clean","install","-f","zoo-master/antarctic-penguin/pom.xml"]
+RUN ["unzip","-o","-d","/usr/local","/usr/local/master"]
+RUN ["mvn ","clean","install","-f","/usr/local/master/antarctic-penguin/pom.xml"]
 
-COPY ["zoo-master/antarctic-penguin/antarctic-penguin-server/target/antarctic-penguin-server-1.0-SNAPSHOT.jar","/usr/local/antarctic-penguin-server/antarctic-penguin-server.jar"]
+COPY ["/usr/local/master/antarctic-penguin/antarctic-penguin-server/target/antarctic-penguin-server-1.0-SNAPSHOT.jar","/usr/local/antarctic-penguin-server/antarctic-penguin-server.jar"]
 
 EXPOSE 8080
 
-CMD ['java',"-jar","antarctic-penguin-server/antarctic-penguin-server.jar"]
+CMD ['java',"-jar","/usr/local/antarctic-penguin-server/antarctic-penguin-server.jar"]
 
 # docker build -f docker/antarctic-penguin/0.1.0/Dockerfile -t antarctic-penguin .
 # docker run -d -p 8080:8080 --name antarctic-penguin antarctic-penguin
+# docker run -it -p 8080:8080 --name antarctic-penguin antarctic-penguin
 # docker exec -it antarctic-penguin /bin/bash
 # docker attach antarctic-penguin /bin/bash
