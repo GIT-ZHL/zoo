@@ -12,6 +12,7 @@ ENV PATH $PATH:$JAVA_HOME/bin:$CATALINE_HOME/lib:$CATALINE_HOME/bin:$MAVEN_HOME/
 WORKDIR $WORK_PATH
 # https://code.aliyun.com/kar/oracle-jdk/raw/3c932f02aa11e79dc39e4a68f5b0483ec1d32abe/jdk-8u251-linux-x64.tar.gz
 # https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.37/bin/apache-tomcat-9.0.37.tar.gz
+# https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ADD https://code.aliyun.com/kar/oracle-jdk/raw/3c932f02aa11e79dc39e4a68f5b0483ec1d32abe/jdk-8u251-linux-x64.tar.gz $WORK_PATH
 RUN ["tar","-zxvf","jdk-8u251-linux-x64.tar.gz"]
 RUN ["rm","-rf","jdk-8u251-linux-x64.tar.gz"]
