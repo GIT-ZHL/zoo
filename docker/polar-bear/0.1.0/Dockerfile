@@ -25,7 +25,7 @@ RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
 RUN yum -y install vim
 ADD https://github.com/GIT-ZHL/zoo/archive/master.zip $WORK_PATH
 RUN yum -y install unzip
-RUN ["unzip","-o","-d","/usr/local","zoo-master"]
+RUN ["unzip","-o","-d","/usr/local","/usr/local/zoo-master.zip"]
 RUN ["mvn ","clean","install","-f","zoo-master/polar-bear/pom.xml"]
 
 COPY ["zoo-master/polar-bear/polar-bear-server/target/polar-bear-server-1.0-SNAPSHOT","/usr/local/apache-tomcat-9.0.37/webapps/polar-bear-server"]
