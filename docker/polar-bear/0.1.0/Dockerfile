@@ -1,25 +1,34 @@
-# Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
-# this work for additional information regarding copyright ownership.
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+FROM centos
+MAINTAINER zhaohaoliang<13912947251@163.com>
 
-FROM openjdk:8-jdk
-RUN mkdir /source && wget https://github.com/apache/dubbo-admin/archive/0.1.zip && unzip 0.1.zip -d /source
-WORKDIR /source/dubbo-admin-0.1
-RUN ./mvnw clean package -Dmaven.test.skip=true
+ENV WORK_PATH /usr/local
+ENV JAVA_HOME $WORK_PATH/jdk1.8.0_251
+ENV CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ENV CATALINE_HOME $WORK_PATH/apache-tomcat-9.0.37
+ENV CATALINE_BASE $WORK_PATH/apache-tomcat-9.0.37
+ENV MAVEN_HOME $WORK_PATH/apache-maven-3.6.3
+ENV PATH $PATH:$JAVA_HOME/bin:$CATALINE_HOME/lib:$CATALINE_HOME/bin:$MAVEN_HOME/bin
 
-FROM openjdk:8-jre
-LABEL maintainer="dev@dubbo.apache.org"
-COPY --from=0 /source/dubbo-admin-0.1/dubbo-admin-distribution/target/dubbo-admin-0.1.jar /app.jar
-ENTRYPOINT ["java","-XX:+UnlockExperimentalVMOptions","-XX:+UseCGroupMemoryLimitForHeap","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+WORKDIR $WORK_PATH
+# https://code.aliyun.com/kar/oracle-jdk/raw/3c932f02aa11e79dc39e4a68f5b0483ec1d32abe/jdk-8u251-linux-x64.tar.gz
+# https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.37/bin/apache-tomcat-9.0.37.tar.gz
+ADD https://code.aliyun.com/kar/oracle-jdk/raw/3c932f02aa11e79dc39e4a68f5b0483ec1d32abe/jdk-8u251-linux-x64.tar.gz $WORK_PATH
+RUN ["tar","-zxvf","jdk-8u251-linux-x64.tar.gz"]
+RUN ["rm","-rf","jdk-8u251-linux-x64.tar.gz"]
+ADD https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.37/bin/apache-tomcat-9.0.37.tar.gz $WORK_PATH
+RUN ["tar","-zxvf","apache-tomcat-9.0.37.tar.gz"]
+RUN ["rm","-rf","apache-tomcat-9.0.37.tar.gz"]
+ADD https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz $WORK_PATH
+RUN ["tar","-zxvf","apache-maven-3.6.3-bin.tar.gz"]
+RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
+RUN yum -y install vim
+
 EXPOSE 8080
+
+CMD $CATALINE_HOME/bin/startup.sh && tail -f $CATALINE_HOME/logs/catalina.out
+
+# docker build -f tomcat/Dockerfile -t tomtiger .
+# docker run -d -p 8080:8080 --name tomtiger tomtiger -v /Users/zhaohaoliang/workspace/docker-workspace/docker-learn/tomcat/logs:/usr/local/apache-tomcat-9.0.37/logs --privileged=true
+# docker run -d -p 8080:8080 --name tomtiger tomtiger
+# docker exec -it tomtiger /bin/bash
+# docker attach tomtiger /bin/bash
