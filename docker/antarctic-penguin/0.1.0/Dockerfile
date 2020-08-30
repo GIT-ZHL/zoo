@@ -23,6 +23,8 @@ ADD https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apa
 RUN ["tar","-zxvf","apache-maven-3.6.3-bin.tar.gz"]
 RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
 RUN yum -y install vim
+ADD https://github.com/GIT-ZHL/zoo/archive/master.zip $WORK_PATH
+RUN ["mvn ","clean","install","-f","zoo-master/polar-bear/pom.xml"]
 
 EXPOSE 8080
 
