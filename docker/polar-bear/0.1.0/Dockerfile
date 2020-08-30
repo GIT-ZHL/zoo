@@ -23,7 +23,7 @@ ADD https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apa
 RUN ["tar","-zxvf","apache-maven-3.6.3-bin.tar.gz"]
 RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
 RUN yum -y install vim
-ADD https://gitee.com/crazy-zoo/zoo/repository/archive/master.zip $WORK_PATH
+ADD https://github.com/GIT-ZHL/zoo/archive/master.zip $WORK_PATH
 RUN ["mvn ","clean","install","-f","zoo-master/polar-bear/pom.xml"]
 
 COPY ["zoo-master/polar-bear/polar-bear-server/target/polar-bear-server-1.0-SNAPSHOT","/usr/local/apache-tomcat-9.0.37/webapps/polar-bear-server"]
