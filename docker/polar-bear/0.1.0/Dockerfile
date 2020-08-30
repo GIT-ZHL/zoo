@@ -23,13 +23,16 @@ ADD https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apa
 RUN ["tar","-zxvf","apache-maven-3.6.3-bin.tar.gz"]
 RUN ["rm","-rf","apache-maven-3.6.3-bin.tar.gz"]
 RUN yum -y install vim
+ADD https://github.com/GIT-ZHL/zoo/archive/master.zip $WORK_PATH
+RUN ["mvn ","clean","install","-f","zoo-master/polar-bear/pom.xml"]
+
+COPY ["zoo-master/polar-bear/polar-bear-server/target/polar-bear-server-1.0-SNAPSHOT","/usr/local/apache-tomcat-9.0.37/webapps/polar-bear-server"]
 
 EXPOSE 8080
 
 CMD $CATALINE_HOME/bin/startup.sh && tail -f $CATALINE_HOME/logs/catalina.out
 
-# docker build -f tomcat/Dockerfile -t tomtiger .
-# docker run -d -p 8080:8080 --name tomtiger tomtiger -v /Users/zhaohaoliang/workspace/docker-workspace/docker-learn/tomcat/logs:/usr/local/apache-tomcat-9.0.37/logs --privileged=true
-# docker run -d -p 8080:8080 --name tomtiger tomtiger
-# docker exec -it tomtiger /bin/bash
-# docker attach tomtiger /bin/bash
+# docker build -f docker/polar-bear/0.1.0/Dockerfile -t polar-bear .
+# docker run -d -p 8080:8080 --name polar-bear polar-bear
+# docker exec -it polar-bear /bin/bash
+# docker attach polar-bear /bin/bash
